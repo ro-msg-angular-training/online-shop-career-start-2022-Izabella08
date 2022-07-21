@@ -1,0 +1,13 @@
+h3 {
+    font-size: 1.5em;
+}
+
+p {
+    letter-spacing: 0em;
+    word-spacing: 0.02em;
+    line-height: 1.5;
+}
+  
+button1 {
+    background-color: #008CBA;
+}

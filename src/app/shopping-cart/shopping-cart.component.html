@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1><strong>Items in shopping cart:</strong> </h1>
+    <div *ngFor="let shoppingCart of cart">
+        <ul>
+            <div><p> <strong>Product id: </strong> {{ shoppingCart.productId}} <strong>Quantity: </strong> {{shoppingCart.quantity}}</p> </div>
+        </ul>
+    </div>
+
+    <br>
+    <button button mat-raised-button color="primary" (click)="doOrder()">CHECK OUT</button>
+</body>
+</html>
