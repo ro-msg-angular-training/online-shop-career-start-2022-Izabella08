@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    background-color: white;
+    text-align: center;
+
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button {
+    color: black;
+    padding: 7px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 8x;
+    cursor: pointer;
+}

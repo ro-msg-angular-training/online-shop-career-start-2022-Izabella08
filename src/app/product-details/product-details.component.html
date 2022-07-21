@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div *ngIf="product">
+        <h2>{{product.name | uppercase}} Details</h2>
+        <div><strong>Id: </strong>{{product.id}}</div>
+        <div><strong>Category: </strong>{{product.category}}</div>
+        <div><strong>Price: </strong>{{product.price}}</div>
+        <div><strong>Description: </strong>{{product.description}}</div>
+        <br>
+        <button button mat-raised-button color="primary" (click)="deleteProduct()">DELETE</button>    
+        <br>    
+        <button button mat-raised-button color="primary" (click)="addProductToCart(product.id)">ADD TO CART</button>
+        <br>
+        <nav>
+            <button button mat-raised-button color="primary" [routerLink]="'/edit-product/'+product.id"  routerLinkActive="active" ariaCurrentWhenActive="page" >EDIT</button>
+        </nav>
+        <router-outlet></router-outlet>
+        <!--<input type="button" class="button_example" value="ADD TO CART" />-->
+    </div>
+</body>
+</html>

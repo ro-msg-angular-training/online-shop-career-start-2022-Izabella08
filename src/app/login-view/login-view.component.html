@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1><strong>WELCOME!</strong> </h1>
+
+    <form [formGroup]="myForm">
+
+        <mat-form-field>
+            <input matInput placeholder="username" formControlName="username">
+
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <input matInput type="password" placeholder="password" formControlName="password">
+            <mat-hint>Must have one letter and one number</mat-hint>
+        </mat-form-field>
+
+        <br>
+
+        <button style="font-size: 20px; height:70px; width: 200px;" mat-raised-button color="primary" (click)="login()">LOGIN</button>
+
+    </form>
+   
+</body>
+</html>

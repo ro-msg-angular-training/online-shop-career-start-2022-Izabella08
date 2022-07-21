@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h1><strong>Add new product page</strong> </h1>
+
+    <form [formGroup]="myForm">
+
+        <mat-form-field>
+            <input matInput placeholder="id" formControlName="id">
+
+            <mat-hint>Id must be a number</mat-hint>
+
+            <mat-error *ngIf="id?.errors?.['min']">
+                Price must be at least 1.
+            </mat-error>
+
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <input matInput placeholder="name" formControlName="name">
+
+            <mat-error *ngIf="">
+                Your name does not look right.
+            </mat-error>
+
+            <mat-error *ngIf="(name?.invalid && (name?.dirty || name?.touched)) || name?.errors?.['required']">
+                Name is required.
+            </mat-error>
+
+            <mat-error *ngIf="name?.errors?.['minlength']">
+                Name must be at least 4 characters long.
+            </mat-error>
+
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <input matInput placeholder="category" formControlName="category">
+
+            <mat-error *ngIf="(category?.invalid && (category?.dirty || category?.touched)) || category?.errors?.['required']">
+                Category is required.
+            </mat-error>
+
+            <mat-error *ngIf="category?.errors?.['minlength']">
+                Category must be at least 4 characters long.
+            </mat-error>
+
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <input matInput placeholder="price" formControlName="price">
+
+            <mat-hint>Price must be a number</mat-hint>
+
+            <mat-error *ngIf="price?.errors?.['min']">
+                Price must be at least 10.
+            </mat-error>
+
+            <mat-error *ngIf="price?.errors?.['max']">
+                Price must be maximum 5000.
+            </mat-error>
+
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+            <input matInput placeholder="description" formControlName="description">
+
+            <mat-error *ngIf="(description?.invalid && (description?.dirty || description?.touched)) || description?.errors?.['required']">
+                Description is required.
+            </mat-error>
+
+            <mat-error *ngIf="description?.errors?.['minlength']">
+                Description must be at least 5 characters long.
+            </mat-error>
+
+        </mat-form-field>
+
+        <br>
+
+    </form>
+
+    <br>
+
+    <button button mat-raised-button color="primary" (click)="discardChanges()">CANCEL</button>
+    <button button mat-raised-button [disabled] = "myForm.invalid" color="primary" (click)="addProduct()">SAVE CHANGES</button>
+</body>
+</html>
