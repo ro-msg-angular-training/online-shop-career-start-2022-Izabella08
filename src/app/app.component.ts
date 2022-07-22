@@ -10,7 +10,6 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class AppComponent {
-  title = 'online-shop';
 
-  constructor(private http: HttpClient){}
+  constructor(){}
 }

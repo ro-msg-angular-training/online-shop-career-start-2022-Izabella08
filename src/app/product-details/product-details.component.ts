@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Product } from '../entities/product';
 import { CartService } from '../services/cartService';
 import { ProductService } from '../services/productService';
@@ -20,6 +22,7 @@ export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
   productDetails: any;
   id: string | null | undefined;
+  productSubscriptions : Subscription[] = [];
 
   ngOnInit(): void {
     this.getProduct();
@@ -27,16 +30,23 @@ export class ProductDetailsComponent implements OnInit {
 
   getProduct(): void {
     this.id = this.route.snapshot.paramMap.get("id");
-    this.productService.getProductById(this.id).subscribe(product => this.product = product);
+    this.productSubscriptions.push(this.productService.getProductById(this.id).subscribe(product => this.product = product));
   }
 
   deleteProduct(){
     this.id = this.route.snapshot.paramMap.get("id");
-    this.productService.deleteProduct(this.id).subscribe(() => {alert("Product deleted succesfully!") });
+    this.productSubscriptions.push(this.productService.deleteProduct(this.id).subscribe(() => Swal.fire("Product deleted successfully!") ));
   }
 
   addProductToCart(id: number){
     this.cartService.addProductToCart(id);
+  }
+
+  ngOnDestroy(){
+    this.productSubscriptions.forEach(element => {
+      if(element !== undefined)  
+        element.unsubscribe();
+    });
   }
 
 }

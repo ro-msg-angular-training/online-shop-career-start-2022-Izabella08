@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../services/productService';
-
+import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-add-new-product',
   templateUrl: './add-new-product.component.html',
@@ -10,7 +11,8 @@ import { ProductService } from '../services/productService';
 export class AddNewProductComponent implements OnInit {
 
   myForm: FormGroup;
-
+  productSubscription : Subscription;
+  
   constructor(
     private fb: FormBuilder,
     private productService: ProductService  
@@ -43,8 +45,6 @@ export class AddNewProductComponent implements OnInit {
       ]]
     })
 
-    this.myForm.valueChanges.subscribe(console.log);
-
   }
 
   get id(){
@@ -68,18 +68,23 @@ export class AddNewProductComponent implements OnInit {
   }
 
   addProduct(){
-    let body = { 
+    const payload = { 
       id: this.myForm.value.id,
       name: this.myForm.value.name,
       category: this.myForm.value.category,
       price: this.myForm.value.price,
       description: this.myForm.value.description
     }
-    this.productService.addNewProduct(body).subscribe(() => alert("Product added succesfully!"));
+    this.productSubscription = this.productService.addNewProduct(payload).subscribe(() => Swal.fire("Product added successfully!"));
   }
 
   discardChanges(){
     this.myForm.reset();
+  }
+
+  ngOnDestroy(){
+    if(this.productSubscription !== undefined)
+      this.productSubscription.unsubscribe();
   }
 
 }
