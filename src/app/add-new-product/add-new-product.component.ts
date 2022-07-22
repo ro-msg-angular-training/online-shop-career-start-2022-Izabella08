@@ -43,8 +43,6 @@ export class AddNewProductComponent implements OnInit {
       ]]
     })
 
-    this.myForm.valueChanges.subscribe(console.log);
-
   }
 
   get id(){
@@ -68,14 +66,14 @@ export class AddNewProductComponent implements OnInit {
   }
 
   addProduct(){
-    let body = { 
+    const payload = { 
       id: this.myForm.value.id,
       name: this.myForm.value.name,
       category: this.myForm.value.category,
       price: this.myForm.value.price,
       description: this.myForm.value.description
     }
-    this.productService.addNewProduct(body).subscribe(() => alert("Product added succesfully!"));
+    this.productService.addNewProduct(payload).subscribe(() => alert("Product added succesfully!"));
   }
 
   discardChanges(){

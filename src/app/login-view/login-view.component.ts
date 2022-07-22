@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from '../entities/user';
-import { LoginService } from '../services/loginService';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login-view',
@@ -19,7 +19,7 @@ export class LoginViewComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private loginService: LoginService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -32,21 +32,14 @@ export class LoginViewComponent implements OnInit {
   }
 
   login(){
-    let body = { 
+    const payload = { 
       username: this.myForm.value.username,
       password: this.myForm.value.password
     }
-    //console.log(body.username);
-    //console.log(body.password);
-    this.loginService.getUser(body).subscribe(data => {
-      console.log(data);
-      this.router.navigateByUrl('/list-of-products');
-    },
-      response => {
-        console.log("Error when trying to login!", response);
-        alert("Username or password incorrect!");
-      }
-      ); 
+
+    this.authService.login(payload).subscribe(data => {const redirectUrl = this.authService.redirectUrl;
+      this.router.navigateByUrl("/list-of-products");
+    })
   }
 
 }

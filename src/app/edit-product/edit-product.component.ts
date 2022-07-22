@@ -14,7 +14,7 @@ export class EditProductComponent implements OnInit {
 
   myForm: FormGroup;
   product: Product | undefined;
-  id: string | null | undefined;
+  id: string | null;
 
   constructor(
     private fb: FormBuilder,
@@ -44,8 +44,6 @@ export class EditProductComponent implements OnInit {
       ]]
     })
 
-    this.myForm.valueChanges.subscribe(console.log);
-
   }
 
   get name(){
@@ -66,14 +64,14 @@ export class EditProductComponent implements OnInit {
 
   editProductDetails(){
     this.id = this.route.snapshot.paramMap.get("id");
-    let body = { 
-      id: Number(this.id),
+    const payload = { 
+      id: parseInt(this.id!),
       name: this.myForm.value.name,
       category: this.myForm.value.category,
       price: this.myForm.value.price,
       description: this.myForm.value.description
     }
-    this.productService.editProduct(Number(this.id), body).subscribe(() => alert("Product edited succesfully!"));
+    this.productService.editProduct(Number(this.id), payload).subscribe(() => alert("Product edited succesfully!"));
   }
 
   discardChanges(){

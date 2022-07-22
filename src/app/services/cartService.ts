@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { ProductIdQuantity } from "../entities/productIdQuantity";
 
-
 @Injectable({
     providedIn: 'root'
 })
 
 export class CartService {
 
-    URL = "http://localhost:3000/products";
+    URL: "http://localhost:3000/products"
 
     constructor( private httpService: HttpClient){
     }
