@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Product } from '../entities/product';
 import { ProductIdQuantity } from '../entities/productIdQuantity';
 import { CartService } from '../services/cartService';
@@ -12,6 +14,7 @@ import { CartService } from '../services/cartService';
 export class ShoppingCartComponent implements OnInit {
 
   cart = new Array<ProductIdQuantity>;
+  cartSubscription: Subscription;
 
   constructor( 
     private route: ActivatedRoute,
@@ -25,7 +28,12 @@ export class ShoppingCartComponent implements OnInit {
 
 
   doOrder(){
-    this.cartService.checkout().subscribe(() => alert('Order sent succesfully!'));
+    this.cartSubscription = this.cartService.checkout().subscribe(() => Swal.fire('Order sent successfully!'));
+  }
+
+  ngOnDestroy(){
+    if(this.cartSubscription !== undefined)
+      this.cartSubscription.unsubscribe();
   }
   
 }

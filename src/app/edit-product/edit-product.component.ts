@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { __values } from 'tslib';
 import { Product } from '../entities/product';
 import { ProductService } from '../services/productService';
@@ -15,6 +17,7 @@ export class EditProductComponent implements OnInit {
   myForm: FormGroup;
   product: Product | undefined;
   id: string | null;
+  productSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -71,11 +74,16 @@ export class EditProductComponent implements OnInit {
       price: this.myForm.value.price,
       description: this.myForm.value.description
     }
-    this.productService.editProduct(Number(this.id), payload).subscribe(() => alert("Product edited succesfully!"));
+    this.productSubscription = this.productService.editProduct(Number(this.id), payload).subscribe(() => Swal.fire("Product edited successfully!"));
   }
 
   discardChanges(){
     this.myForm.reset();
+  }
+
+  ngOnDestroy(){
+    if(this.productSubscription !== undefined)
+      this.productSubscription.unsubscribe();
   }
 
 }

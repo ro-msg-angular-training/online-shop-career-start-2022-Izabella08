@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
+import { environment } from 'src/environments/environment';
 import { ProductIdQuantity } from "../entities/productIdQuantity";
 
 @Injectable({
@@ -7,8 +8,6 @@ import { ProductIdQuantity } from "../entities/productIdQuantity";
 })
 
 export class CartService {
-
-    URL: "http://localhost:3000/products"
 
     constructor( private httpService: HttpClient){
     }
@@ -28,6 +27,6 @@ export class CartService {
     }
   
     checkout(){
-        return this.httpService.post(this.URL + '/orders' , this.getCart(), { responseType: 'text' });
+        return this.httpService.post(environment.productsURL + '/orders' , this.getCart(), { responseType: 'text' });
     }
  }

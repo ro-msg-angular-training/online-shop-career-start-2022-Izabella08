@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../services/productService';
-
+import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-add-new-product',
   templateUrl: './add-new-product.component.html',
@@ -10,7 +11,8 @@ import { ProductService } from '../services/productService';
 export class AddNewProductComponent implements OnInit {
 
   myForm: FormGroup;
-
+  productSubscription : Subscription;
+  
   constructor(
     private fb: FormBuilder,
     private productService: ProductService  
@@ -73,11 +75,16 @@ export class AddNewProductComponent implements OnInit {
       price: this.myForm.value.price,
       description: this.myForm.value.description
     }
-    this.productService.addNewProduct(payload).subscribe(() => alert("Product added succesfully!"));
+    this.productSubscription = this.productService.addNewProduct(payload).subscribe(() => Swal.fire("Product added successfully!"));
   }
 
   discardChanges(){
     this.myForm.reset();
+  }
+
+  ngOnDestroy(){
+    if(this.productSubscription !== undefined)
+      this.productSubscription.unsubscribe();
   }
 
 }

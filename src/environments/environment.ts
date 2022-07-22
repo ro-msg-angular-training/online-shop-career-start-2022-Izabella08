@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  URL: "http://localhost:3000",
+  productsURL: "http://localhost:3000/products"
 };
 
 

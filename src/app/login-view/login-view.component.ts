@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { User } from '../entities/user';
 import { AuthService } from '../services/auth.service';
 
@@ -14,6 +14,7 @@ export class LoginViewComponent implements OnInit {
 
   myForm: FormGroup;
   users$: Observable<User[]>;
+  loginSubscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -37,9 +38,14 @@ export class LoginViewComponent implements OnInit {
       password: this.myForm.value.password
     }
 
-    this.authService.login(payload).subscribe(data => {const redirectUrl = this.authService.redirectUrl;
+    this.loginSubscription = this.authService.login(payload).subscribe(data => {const redirectUrl = this.authService.redirectUrl;
       this.router.navigateByUrl("/list-of-products");
     })
+  }
+
+  ngOnDestroy(){
+    if(this.loginSubscription !== undefined)
+        this.loginSubscription.unsubscribe();
   }
 
 }
