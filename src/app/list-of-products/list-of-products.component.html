@@ -1,28 +1,37 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <nav>
-            <button button mat-raised-button color="primary" [routerLink]="'/shopping-cart'" routerLinkActive="active" ariaCurrentWhenActive="page" >VIEW SHOPPING CART</button>
-        </nav>
-        <router-outlet></router-outlet>
+<nav>
+    <button button mat-raised-button color="primary" [routerLink]="'/shopping-cart'" routerLinkActive="active" ariaCurrentWhenActive="page" >VIEW SHOPPING CART</button>
+</nav>
+<router-outlet></router-outlet>
 
-        <br>
-        <nav>
-            <button button mat-raised-button color="primary" [routerLink]="'/add-new-product'" routerLinkActive="active" ariaCurrentWhenActive="page" >ADD NEW PRODUCT</button>
-        </nav>
+<br>
 
-        <br>
+<nav>
+    <button button mat-raised-button color="primary" [routerLink]="'/add-new-product'" routerLinkActive="active" ariaCurrentWhenActive="page" >ADD NEW PRODUCT</button>
+</nav>
 
-        <h1><strong>Available products:</strong> </h1>
-        <ul *ngIf="products$ | async as products$ else noData">
-            <div *ngFor="let product of products$">
-                <div> <strong>Name: </strong>  {{product.name}}</div>
-                <nav>
-                    <button button mat-raised-button color="primary" [routerLink]="'/product-details/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page" >Details</button>
-                </nav>
-                <br>
-            </div> 
-        </ul>
-        <ng-template #noData>No Data Available</ng-template>
-    </body>
-</html>
+<br>
+
+<h1><strong>Available products:</strong> </h1>
+<table class="center">
+    <thead>
+    <tr>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngIf="products$ | async as products$ else noData">
+        <tr *ngFor="let product of products$">
+            <td>{{product.category}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td id="button"> <button mat-raised-button color="primary" [routerLink]="'/product-details/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page">Details</button>
+            </td>
+        </tr>
+    </ng-container>
+   
+    </tbody>
+</table>
+<ng-template #noData>No Data Available</ng-template>

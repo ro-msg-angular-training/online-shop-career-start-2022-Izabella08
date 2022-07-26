@@ -1,17 +1,18 @@
-<div *ngIf="product">
+<div *ngIf="(selectOneProduct$ | async) as product">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <h2>{{product.name | uppercase}} Details</h2>
     <div><strong>Id: </strong>{{product.id}}</div>
     <div><strong>Category: </strong>{{product.category}}</div>
     <div><strong>Price: </strong>{{product.price}}</div>
     <div><strong>Description: </strong>{{product.description}}</div>
     <br>
-    <button button mat-raised-button color="primary" (click)="deleteProduct()">DELETE</button>    
+    <button button mat-raised-button color="primary" (click)="deleteProduct()"><i class="fa fa-trash"></i> DELETE
+    </button>    
     <br>    
-    <button button mat-raised-button color="primary" (click)="addProductToCart(product.id)">ADD TO CART</button>
+    <button button mat-raised-button color="primary" (click)="addProductToCart()">ADD TO CART</button>
     <br>
     <nav>
         <button button mat-raised-button color="primary" [routerLink]="'/edit-product/'+product.id"  routerLinkActive="active" ariaCurrentWhenActive="page" >EDIT</button>
     </nav>
     <router-outlet></router-outlet>
-        <!--<input type="button" class="button_example" value="ADD TO CART" />-->
 </div>
