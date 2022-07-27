@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { from, of } from 'rxjs';
+import { from, of, tap } from 'rxjs';
 import { catchError, map, switchMap, concatMap  } from 'rxjs/operators';
 import { Product } from 'src/app/entities/product';
 import { ProductService } from 'src/app/services/productService';
-import { GetProductList, GetProductListeError, GetProductListSuccess, GetProduct, GetProductSucces, GetProductError, 
-  DeleteProduct, DeleteProductSuccess, DeleteProductError, EditProduct, EditProductSuccess, EditProductError,
-  AddProduct, AddProductError, AddProductSuccess } from '../actions/product.actions';
+import { GetProductList, Error, GetProductListSuccess, GetProduct, GetProductSucces, 
+  DeleteProduct, DeleteProductSuccess, EditProduct, EditProductSuccess,
+  AddProduct, AddProductSuccess } from '../actions/product.actions';
 
 @Injectable()
 export class ProductEffects {
   
   constructor(
     private productService: ProductService,
-    private actions$: Actions
+    private actions$: Actions,
+    private router: Router
   ) {}
 
   getProducts$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(GetProductList),
-            switchMap(() =>
-                from(this.productService.getProducts()).pipe(
-                    map((products) => GetProductListSuccess({ products: products })),
-                    catchError((error) => of(GetProductListeError({ error })))
-                )
+    this.actions$.pipe(
+      ofType(GetProductList),
+        switchMap(() =>
+          from(this.productService.getProducts()).pipe(
+            map((products) => GetProductListSuccess({ products: products })),
+              catchError((error) => of(Error({ error })))
             )
         )
-    );
+    )
+  );
 
   getProduct$ = createEffect(() =>
     this.actions$.pipe(
@@ -41,23 +43,47 @@ export class ProductEffects {
       switchMap((action) => 
         from(this.productService.deleteProduct(action.id).pipe(
           map(() => DeleteProductSuccess()),
-          catchError((error) => of(DeleteProductError({error})))
+          catchError((error) => of(Error({error})))
         ))
       )
     )
   )
 
+  deleteProductSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DeleteProductSuccess),
+        tap(({}) => {
+          alert("Product deleted successfully!");
+          this.router.navigateByUrl('/list-of-products').then();
+        })
+      ),
+    { dispatch: false }
+  );
+
   editProduct$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EditProduct),
       switchMap((action) =>
-        from(this.productService.editProduct(action.id, action.product).pipe(map(() => action.product),
+        from(this.productService.editProduct(action.product).pipe(map(() => action.product),
           map((product: Product) => EditProductSuccess({product})),
-          catchError((error) => of(EditProductError({error})))
+          catchError((error) => of(Error({error})))
         ))
       )
     )
   )
+
+  editProductSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EditProductSuccess),
+        tap(({}) => {
+          alert("Product edited successfully!");
+          this.router.navigateByUrl('/list-of-products').then();
+        })
+      ),
+    { dispatch: false }
+  );
 
   addProduct$ = createEffect(() =>
     this.actions$.pipe(
@@ -67,10 +93,22 @@ export class ProductEffects {
           map((product: any) => {
             return AddProductSuccess({ product });
           }),
-          catchError((error) => of(AddProductError({error})))
+          catchError((error) => of(Error({error})))
         )
       )
     )
   )
+
+  addProductSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AddProductSuccess),
+        tap(({}) => {
+          alert("Product added successfully!");
+          this.router.navigateByUrl('/list-of-products').then();
+        })
+      ),
+    { dispatch: false }
+  );
   
 }

@@ -1,7 +1,7 @@
 import { createReducer,on } from '@ngrx/store';
-import { GetProductList, GetProductListeError, GetProductListSuccess, GetProduct, GetProductSucces, GetProductError,
-  DeleteProduct, DeleteProductSuccess, DeleteProductError, EditProduct, EditProductError, EditProductSuccess,
-  AddProduct, AddProductError, AddProductSuccess } from '../actions/product.actions';
+import { GetProductList, Error, GetProductListSuccess, GetProduct, GetProductSucces,
+  DeleteProduct, DeleteProductSuccess, EditProduct, EditProductSuccess,
+  AddProduct, AddProductSuccess } from '../actions/product.actions';
 import { initialProductState } from '../state/product.state';
 
 export const productReducers = createReducer(
@@ -19,7 +19,7 @@ export const productReducers = createReducer(
     status: 'success',
   })),
 
-  on(GetProductListeError, (state, { error }) => ({
+  on(Error, (state, { error }) => ({
     ...state,
     error: error,
     status: 'error',
@@ -36,11 +36,6 @@ export const productReducers = createReducer(
     selectedProduct: product
   })),
 
-  on(GetProductError, (state) => ({
-    ...state,
-    status: 'error',
-  })),
-
   on(DeleteProduct, (state) => ({
     ...state,
     status: 'loading',
@@ -49,11 +44,6 @@ export const productReducers = createReducer(
   on(DeleteProductSuccess, (state) => ({
     ...state,
     status: 'success',
-  })),
-
-  on(DeleteProductError, (state) => ({
-    ...state,
-    status: 'error',
   })),
 
   on(EditProduct, (state) => ({
@@ -66,11 +56,6 @@ export const productReducers = createReducer(
     status: 'success',
   })),
 
-  on(EditProductError, (state) => ({
-    ...state,
-    status: 'error',
-  })),
-
   on(AddProduct, (state) => ({
     ...state,
     status: 'loading',
@@ -81,11 +66,6 @@ export const productReducers = createReducer(
     status: 'success',
   })),
 
-  on(AddProductError, (state) => ({
-    ...state,
-    status: 'error',
-  })),
-  
 )
 
 
