@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Product } from '../entities/product';
-import { ProductService } from '../services/productService';
-import { ShoppingCartComponent } from '../shopping-cart/shopping-cart.component';
+import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { IAppState } from '../store/state/app.state';
+import { selectProductList } from '../store/selectors/product.selectors';
+import { GetProductList } from '../store/actions/product.actions';
 
 @Component({
   selector: 'app-list-of-products',
@@ -14,13 +14,13 @@ import { ShoppingCartComponent } from '../shopping-cart/shopping-cart.component'
 export class ListOfProductsComponent implements OnInit {
 
   constructor(
-    private productService: ProductService,
+    private store: Store<IAppState>, private router: Router
   ) {}
 
-  products$: Observable<Product[]>;
+  products$ = this.store.select(selectProductList);
 
   ngOnInit() {
-      this.products$ = this.productService.getProducts();
+    this.store.dispatch(GetProductList());
   }
 
 }

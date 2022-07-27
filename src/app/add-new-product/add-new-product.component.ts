@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../services/productService';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
+import { IAppState } from '../store/state/app.state';
+import { Store } from '@ngrx/store';
+import { IfStmt } from '@angular/compiler';
+import { AddProduct } from '../store/actions/product.actions';
 @Component({
   selector: 'app-add-new-product',
   templateUrl: './add-new-product.component.html',
@@ -11,11 +15,10 @@ import { Subscription } from 'rxjs';
 export class AddNewProductComponent implements OnInit {
 
   myForm: FormGroup;
-  productSubscription : Subscription;
   
   constructor(
     private fb: FormBuilder,
-    private productService: ProductService  
+    private store: Store<IAppState>
   ) { }
 
   ngOnInit() {
@@ -68,23 +71,18 @@ export class AddNewProductComponent implements OnInit {
   }
 
   addProduct(){
-    const payload = { 
-      id: this.myForm.value.id,
-      name: this.myForm.value.name,
-      category: this.myForm.value.category,
-      price: this.myForm.value.price,
-      description: this.myForm.value.description
+    if (this.myForm?.valid) {
+      const product = this.myForm.value;
+
+      this.store.dispatch(AddProduct({product: product}));
+      alert("Product added successfully!")
+    } else {
+      alert("Something went wrong!")
     }
-    this.productSubscription = this.productService.addNewProduct(payload).subscribe(() => Swal.fire("Product added successfully!"));
   }
 
   discardChanges(){
     this.myForm.reset();
-  }
-
-  ngOnDestroy(){
-    if(this.productSubscription !== undefined)
-      this.productSubscription.unsubscribe();
   }
 
 }

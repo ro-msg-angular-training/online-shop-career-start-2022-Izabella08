@@ -19,6 +19,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { LoginViewComponent } from './login-view/login-view.component';
 
+import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffects } from './store/effects/product.effects';
+import { appReducers } from './store/reducers/app.reducers';
+import { LoginEffects } from './store/effects/login.effects';
+import { ShoppingCartEffects } from './store/effects/shopping-cart.effects';
+import { MatSliderModule } from '@angular/material/slider';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +46,10 @@ import { LoginViewComponent } from './login-view/login-view.component';
     MatSelectModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatChipsModule
+    MatChipsModule,
+    StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot([ProductEffects, LoginEffects, ShoppingCartEffects]),
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
