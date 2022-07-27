@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProductService } from '../services/productService';
-import Swal from 'sweetalert2';
-import { Subscription } from 'rxjs';
 import { IAppState } from '../store/state/app.state';
 import { Store } from '@ngrx/store';
-import { IfStmt } from '@angular/compiler';
 import { AddProduct } from '../store/actions/product.actions';
 @Component({
   selector: 'app-add-new-product',
@@ -47,7 +43,6 @@ export class AddNewProductComponent implements OnInit {
         Validators.minLength(5)
       ]]
     })
-
   }
 
   get id(){
@@ -74,10 +69,7 @@ export class AddNewProductComponent implements OnInit {
     if (this.myForm?.valid) {
       const product = this.myForm.value;
 
-      this.store.dispatch(AddProduct({product: product}));
-      alert("Product added successfully!")
-    } else {
-      alert("Something went wrong!")
+      this.store.dispatch(AddProduct({ product }));
     }
   }
 

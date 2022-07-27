@@ -27,8 +27,8 @@ export class ProductService {
         return this.httpService.delete(environment.productsURL + '/' + id);
     }
     
-    editProduct(id: number, product: Product){
-        return this.httpService.put(environment.productsURL + '/' + id, product);
+    editProduct(product: Product){
+        return this.httpService.put(environment.productsURL + '/' + product.id, product);
     }
 
     addNewProduct(product: Product){

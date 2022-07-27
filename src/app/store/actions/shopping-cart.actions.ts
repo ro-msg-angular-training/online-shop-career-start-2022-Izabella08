@@ -12,10 +12,10 @@ export const AddItemToCartSuccess = createAction(
   '[Product] Add Product To Cart Success',
 )
 
-export const AddItemToCartError = createAction(
-  '[Product] Add Product To Cart Error',
-  props<{ error: any }>()
-)
+export const Error = createAction(
+  '[ShoppingCart] Error',
+  props<{ error: string }>()
+);
 
 export const Checkout = createAction(
   '[Checkout] Checkout', 
@@ -26,8 +26,4 @@ export const CheckoutOrderSuccess = createAction(
   '[Checkout] Checkout Success'
 );
 
-export const CheckoutOrderError = createAction(
-  '[Checkout] Checkout Error', 
-  props<{ error: any }>()
-);
 

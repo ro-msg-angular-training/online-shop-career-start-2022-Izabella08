@@ -3,12 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
 import { __values } from 'tslib';
 import { Product } from '../entities/product';
-import { ProductService } from '../services/productService';
-import { EditProduct, GetProduct } from '../store/actions/product.actions';
-import { selectProduct } from '../store/selectors/product.selectors';
+import { EditProduct } from '../store/actions/product.actions';
 import { IAppState } from '../store/state/app.state';
 
 @Component({
@@ -31,19 +28,26 @@ export class EditProductComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
-    this.id = this.route.snapshot.paramMap.get("id");
-    if(this.id){
-        this.productSubscription = this.store.select(selectProduct).subscribe((data) => {
-        this.selectProductToEdit = data;
-        this.myForm = this.fb.group({
-          name: [this.selectProductToEdit?.name, [Validators.required, Validators.minLength(4)]],
-          category: [this.selectProductToEdit?.category, [ Validators.required, Validators.minLength(4)]],
-          price: [this.selectProductToEdit?.price, [Validators.required, Validators.min(10), Validators.max(5000), Validators.pattern('[0-9]*')]],
-          description: [this.selectProductToEdit?.description, [Validators.required, Validators.minLength(5)]]
-        })
-      })
-    }
+    this.myForm = this.fb.group({
+      name: ['', [
+        Validators.required, 
+        Validators.minLength(4)
+      ]],
+      category: ['', [ 
+        Validators.required, 
+        Validators.minLength(4)
+      ]],
+      price: ['', [
+        Validators.required, 
+        Validators.min(10), 
+        Validators.max(5000), 
+        Validators.pattern('[0-9]*')
+      ]],
+      description: ['', [
+        Validators.required, 
+        Validators.minLength(5)
+      ]]
+    })
   }
 
   get name(){
@@ -63,20 +67,17 @@ export class EditProductComponent implements OnInit {
   }
 
   editProductDetails(){
-    if(this.selectProductToEdit){
-      if(this.myForm.valid){
-        this.selectProductToEdit = {
-          id: this.selectProductToEdit.id,
-          ...this.myForm.value
-        }
-        if (this.selectProductToEdit) {
-          this.store.dispatch(EditProduct({ id: this.selectProductToEdit.id, product: this.selectProductToEdit }));
-          alert("Product edited successfully!")
-        }
-      } else {
-        alert("Something went wrong while trying to edit product details.")
-      }
+    this.id = this.route.snapshot.paramMap.get("id") ?? "";
+
+    this.product = {
+      id: parseInt(this.id),
+      name: this.myForm?.value.name,
+      category: this.myForm?.value.category,
+      price: this.myForm?.value.price,
+      description: this.myForm?.value.description
     }
+
+    this.store.dispatch(EditProduct({ product: this.product }));
   }
 
   discardChanges(){

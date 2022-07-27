@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { initialShoppingCartState } from "../state/shopping-cart.state"
-import { AddItemToCart, Checkout, CheckoutOrderError, CheckoutOrderSuccess, AddItemToCartSuccess, AddItemToCartError } from "../actions/shopping-cart.actions";
+import { AddItemToCart, Checkout, Error, CheckoutOrderSuccess, AddItemToCartSuccess } from "../actions/shopping-cart.actions";
 import { ProductIdQuantity } from "src/app/entities/productIdQuantity";
 
 export const shoppingCartReducers = createReducer(
@@ -39,7 +39,7 @@ export const shoppingCartReducers = createReducer(
       status: "success",
     })),
 
-    on(AddItemToCartError, (state) => ({
+    on(Error, (state) => ({
       ...state,
       status: "error",
       error: "",
@@ -56,11 +56,5 @@ export const shoppingCartReducers = createReducer(
       status: "success",
       error: "",
     })),
-
-    on(CheckoutOrderError, (state) => ({
-      ...state,
-      status: "error",
-      error: "",
-    }))
 
 )

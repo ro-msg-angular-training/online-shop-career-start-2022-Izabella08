@@ -5,7 +5,7 @@ import { from, of, tap} from "rxjs";
 import { Router } from '@angular/router';
 import { ProductService } from 'src/app/services/productService';
 import { catchError, map, switchMap, concatMap  } from 'rxjs/operators';
-import { Checkout, CheckoutOrderError, CheckoutOrderSuccess} from '../actions/shopping-cart.actions';
+import { Checkout, Error, CheckoutOrderSuccess} from '../actions/shopping-cart.actions';
 
 @Injectable()
 export class ShoppingCartEffects {
@@ -23,7 +23,7 @@ export class ShoppingCartEffects {
       ofType(Checkout),
       switchMap(() => this.cartService.checkout().pipe(
         map(() => CheckoutOrderSuccess()),
-        catchError((error) => of(CheckoutOrderError({ error })))
+        catchError((error) => of(Error({ error })))
       )),
     ),
   );
